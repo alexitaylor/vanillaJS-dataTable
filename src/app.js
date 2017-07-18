@@ -16,7 +16,7 @@
   //
 
   var window = root; // Map window to root to avoid confusion
-  var publicMethods = {}; // Placeholder for public methods
+  var dataTable = {}; // Placeholder for public methods
 
   // Default settings
   var defaults = {
@@ -99,7 +99,6 @@
 
   function DataTable(table, options) {
     var tableRef = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-
     // Insert a row in the table at row index 0
     var newRow   = tableRef.insertRow(tableRef.rows.length);
 
@@ -113,7 +112,7 @@
   }
 
   var myTable = document.getElementById('data-table');
-  DataTable(myTable, {data: data});
+  // DataTable(myTable, {data: data});
 
   /**
    * A private method
@@ -126,49 +125,47 @@
   /**
    * A public method
    */
-  publicMethods.doSomething = function (table, options) {
-    var t = document.getElementById(table);
+  dataTable.init = function (table, options) {
+    var tableRef = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+    // Insert a row in the table at row index 0
+    var newRow   = tableRef.insertRow(tableRef.rows.length);
 
-    // create DOM element
-    var elTh = document.createElement('th');
-    var elTd = document.createElement('td');
-
-    // Fill new element with HTML content
-    elTh.innerHTML('testing123');
-    elTd.innerHTML('testing123');
-
-    // Element can nom be inserted in DOM tree
-    t.thead.appendChild(elTh);
-    t.tbody.appendChild(elTd);
+    for (var i = 0; i < 5; i++) {
+      // Insert a cell in the row at index 0
+      var newCell  = newRow.insertCell(i);
+      // Append a text node to the cell
+      var newText  = document.createTextNode('New row row');
+      newCell.appendChild(newText);
+    }
   };
 
   /**
    * Another public method
    */
-  publicMethods.init = function ( options ) {
-
-    // Merge user options with defaults
-    var settings = util.extend( defaults, options || {} );
-
-    // Listen for click events
-    document.addEventListener( 'click', function (){
-      // Do something...
-    }, false );
-
-    // Listen for window resize events
-    window.addEventListener( 'resize',  function (){
-      // Do something...
-    }, false );
-
-    // Code goes here...
-    //
-  };
+  // publicMethods.init = function ( options ) {
+  //
+  //   // Merge user options with defaults
+  //   var settings = util.extend( defaults, options || {} );
+  //
+  //   // Listen for click events
+  //   document.addEventListener( 'click', function (){
+  //     // Do something...
+  //   }, false );
+  //
+  //   // Listen for window resize events
+  //   window.addEventListener( 'resize',  function (){
+  //     // Do something...
+  //   }, false );
+  //
+  //   // Code goes here...
+  //   //
+  // };
 
 
   //
   // Public APIs
   //
 
-  return publicMethods;
+  return dataTable;
 
 });

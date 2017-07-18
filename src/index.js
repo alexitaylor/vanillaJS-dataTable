@@ -1,4 +1,13 @@
-(function() {
+(function (root, factory) {
+
+  if ( typeof define === 'function' && define.amd ) {
+    define([], factory(root));
+  } else if ( typeof exports === 'object' ) {
+    module.exports = factory(root);
+  } else {
+    root.myPlugin = factory(root);
+  }
+})(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
   'use strict';
   // var t = document.createElement('table');
   // tabular data
@@ -22,20 +31,8 @@
     ]
   };
 
-  // document.body.appendChild(t);
 
-
-
-  // var log = [];
-  // var testName;
-  // var dt = new DataTable(t, { data: data });
-
-  // var el = document.createElement('div');
-  //
-  // // Fill new element with HTML content
-  // el.innerHTML = 'testing123';
-  //
-  // // Element can nom be inserted in DOM tree
-  // document.body.appendChild(el);
+  var myTable = document.getElementById('data-table');
+  root.myPlugin.init(myTable, {data: data});
 
 })();
