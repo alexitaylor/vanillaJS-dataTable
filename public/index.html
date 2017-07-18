@@ -6,31 +6,22 @@
         <meta name="author" content="Alexi Taylor">
         <meta name="description" content="Vanilla JS Data Table">
         <title>Vanilla JS Data Table</title>
-        <style>
-            table {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
-            }
-
-            td, th {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f4f4f4;
-            }
-
-            tr:hover {
-                background-color: #e3e3e3
-            }
-        </style>
+        <link rel="stylesheet" href="../src/styles.css">
     </head>
     <body>
         <div id="app"></div>
 
+        <div id="entry-select">
+            <span>Show</span>
+            <select id="entry" onchange="window.selectEntry()">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span>entries</span>
+        </div>
+        <div id="demo"></div>
         <table class="table" id="data-table">
             <thead>
             <tr>

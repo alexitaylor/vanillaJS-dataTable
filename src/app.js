@@ -18,33 +18,6 @@
   var window = root; // Map window to root to avoid confusion
   var dataTable = {}; // Placeholder for public methods
 
-  // Default settings
-  var defaults = {
-    turkey: true,
-    mayo: false,
-    bread: 'wheat',
-  };
-
-  // tabular data
-
-  var data = {
-    "headings": [
-      "Name",
-      "Position",
-      "Phone Number",
-      "Email",
-      "Company",
-    ],
-    "rows": [
-      [
-        "Hedwig F. Nguyen",
-        "Full Stack Engineer",
-        "342.678.9384",
-        "hedwig@gmail.com",
-        "Sales Force"
-      ],
-    ]
-  };
   //
   // Methods
   //
@@ -124,6 +97,18 @@
     // Code goes here...
   };
 
+  // // Get value of select entry per page
+  // var e = document.getElementById('entry');
+  // e.addEventListener('click', function() {
+  //   console.log(e.getElementsByTagName('option'));
+  //   e.getElementsByTagName('option').addEventListener('click', function () {
+  //     console.log('I WAS CLICKED');
+  //   });
+  //   var value = e.options[e.selectedIndex].value;
+  //   console.log('====', value)
+  // });
+
+
   /**
    * A public method
    */
@@ -144,6 +129,14 @@
       }
     });
   };
+
+  // TODO: Fix the state of this function, not window...
+  // Get selected number of entries per page
+  window.selectEntry = function() {
+    var entryValue = document.getElementById('entry').value;
+    console.log('seleeected');
+    document.getElementById('demo').innerHTML = "You selected: " + entryValue;
+  }
 
   /**
    * Another public method
