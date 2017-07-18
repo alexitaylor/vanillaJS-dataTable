@@ -92,25 +92,6 @@
     },
   };
 
-  /**
-   * A private method
-   * @private
-   */
-  var somePrivateMethod = function () {
-    // Code goes here...
-  };
-
-  // // Get value of select entry per page
-  // var e = document.getElementById('entry');
-  // e.addEventListener('click', function() {
-  //   console.log(e.getElementsByTagName('option'));
-  //   e.getElementsByTagName('option').addEventListener('click', function () {
-  //     console.log('I WAS CLICKED');
-  //   });
-  //   var value = e.options[e.selectedIndex].value;
-  //   console.log('====', value)
-  // });
-
 
   /**
    * A public method
@@ -121,10 +102,12 @@
     tableRef.innerHTML = "";
     // Fake data to insert to table
     var data = util.createData();
+
     for (var i = 0; i < options.perPage; i++) {
       // Insert a row in the table at new row index
       var newRow = tableRef.insertRow(tableRef.rows.length);
       var idx = 0;
+
       for (var item in data.rows[i]) {
         var newCell  = newRow.insertCell(idx);
         // Append a text node to the cell
@@ -133,19 +116,6 @@
         idx++;
       }
     }
-
-    // data.rows.forEach(function(row){
-    //   // Insert a row in the table at new row index
-    //   var newRow = tableRef.insertRow(tableRef.rows.length);
-    //   var idx = 0;
-    //   for (var data in row) {
-    //     var newCell  = newRow.insertCell(idx);
-    //     // Append a text node to the cell
-    //     var newText  = document.createTextNode(row[data]);
-    //     newCell.appendChild(newText);
-    //     idx++;
-    //   }
-    // });
   };
 
   // TODO: Fix the state of this function, not window...
@@ -157,29 +127,6 @@
     dataTable.init('table', options);
     console.log(options.perPage);
   };
-
-  /**
-   * Another public method
-   */
-  // publicMethods.init = function ( options ) {
-  //
-  //   // Merge user options with defaults
-  //   var settings = util.extend( defaults, options || {} );
-  //
-  //   // Listen for click events
-  //   document.addEventListener( 'click', function (){
-  //     // Do something...
-  //   }, false );
-  //
-  //   // Listen for window resize events
-  //   window.addEventListener( 'resize',  function (){
-  //     // Do something...
-  //   }, false );
-  //
-  //   // Code goes here...
-  //   //
-  // };
-
 
   //
   // Public APIs
