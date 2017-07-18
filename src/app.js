@@ -45,8 +45,6 @@
       ],
     ]
   };
-
-
   //
   // Methods
   //
@@ -94,25 +92,29 @@
       });
       return extended;
     },
+    /**
+     * Creates Fake Data using fakerJS for table
+     * @private
+     * @returns {Object} 200 Fake values
+     */
+    createData: function() {
+      var dummyData = {
+        rows: [],
+      };
+
+      for (var i = 0; i < 200; i++) {
+        dummyData.rows.push({
+          name: faker.name.findName(),
+          email: faker.internet.email(),
+          compnay: faker.company.companyName(),
+          phoneNumber: faker.phone.phoneNumberFormat(),
+          position: faker.name.title(),
+        });
+      }
+
+      return dummyData;
+    },
   };
-
-
-  function DataTable(table, options) {
-    var tableRef = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-    // Insert a row in the table at row index 0
-    var newRow   = tableRef.insertRow(tableRef.rows.length);
-
-    for (var i = 0; i < 5; i++) {
-      // Insert a cell in the row at index 0
-      var newCell  = newRow.insertCell(i);
-      // Append a text node to the cell
-      var newText  = document.createTextNode('New row row')
-      newCell.appendChild(newText);
-    }
-  }
-
-  var myTable = document.getElementById('data-table');
-  // DataTable(myTable, {data: data});
 
   /**
    * A private method
@@ -127,16 +129,20 @@
    */
   dataTable.init = function (table, options) {
     var tableRef = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-    // Insert a row in the table at row index 0
-    var newRow   = tableRef.insertRow(tableRef.rows.length);
-
-    for (var i = 0; i < 5; i++) {
-      // Insert a cell in the row at index 0
-      var newCell  = newRow.insertCell(i);
-      // Append a text node to the cell
-      var newText  = document.createTextNode('New row row');
-      newCell.appendChild(newText);
-    }
+    // Fake data to insert to table
+    var data = util.createData();
+    data.rows.forEach(function(row){
+      // Insert a row in the table at new row index
+      var newRow   = tableRef.insertRow(tableRef.rows.length);
+      var idx = 0;
+      for (var data in row) {
+        var newCell  = newRow.insertCell(idx);
+        // Append a text node to the cell
+        var newText  = document.createTextNode(row[data]);
+        newCell.appendChild(newText);
+        idx++;
+      }
+    });
   };
 
   /**

@@ -32,7 +32,7 @@
   };
 
 
-  var myTable = document.getElementById('data-table');
+  var myTable = 'something';
   root.myPlugin.init(myTable, {data: data});
 
-})();
+});
