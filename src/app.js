@@ -18,6 +18,9 @@
   var window = root; // Map window to root to avoid confusion
   var dataTable = {}; // Placeholder for public methods
 
+  var options = {
+    perPage: 10,
+  };
   //
   // Methods
   //
@@ -114,29 +117,46 @@
    */
   dataTable.init = function (table, options) {
     var tableRef = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+    // Clear table data before populating, needed when changing # of entries per page
+    tableRef.innerHTML = "";
     // Fake data to insert to table
     var data = util.createData();
-    data.rows.forEach(function(row){
+    for (var i = 0; i < options.perPage; i++) {
       // Insert a row in the table at new row index
-      var newRow   = tableRef.insertRow(tableRef.rows.length);
+      var newRow = tableRef.insertRow(tableRef.rows.length);
       var idx = 0;
-      for (var data in row) {
+      for (var item in data.rows[i]) {
         var newCell  = newRow.insertCell(idx);
         // Append a text node to the cell
-        var newText  = document.createTextNode(row[data]);
+        var newText  = document.createTextNode(data.rows[i][item]);
         newCell.appendChild(newText);
         idx++;
       }
-    });
+    }
+
+    // data.rows.forEach(function(row){
+    //   // Insert a row in the table at new row index
+    //   var newRow = tableRef.insertRow(tableRef.rows.length);
+    //   var idx = 0;
+    //   for (var data in row) {
+    //     var newCell  = newRow.insertCell(idx);
+    //     // Append a text node to the cell
+    //     var newText  = document.createTextNode(row[data]);
+    //     newCell.appendChild(newText);
+    //     idx++;
+    //   }
+    // });
   };
 
   // TODO: Fix the state of this function, not window...
   // Get selected number of entries per page
   window.selectEntry = function() {
     var entryValue = document.getElementById('entry').value;
-    console.log('seleeected');
     document.getElementById('demo').innerHTML = "You selected: " + entryValue;
-  }
+    options.perPage = entryValue;
+    dataTable.init('table', options);
+    console.log(options.perPage);
+  };
 
   /**
    * Another public method

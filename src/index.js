@@ -12,27 +12,12 @@
   // var t = document.createElement('table');
   // tabular data
 
-  var data = {
-    "headings": [
-      "Name",
-      "Position",
-      "Phone Number",
-      "Email",
-      "Company",
-    ],
-    "rows": [
-      [
-        "Hedwig F. Nguyen",
-        "Full Stack Engineer",
-        "342.678.9384",
-        "hedwig@gmail.com",
-        "Sales Force"
-      ],
-    ]
+  var options = {
+    perPage: 10,
   };
 
 
   var myTable = 'something';
-  root.myPlugin.init(myTable, {data: data});
+  root.myPlugin.init(myTable, options);
 
 });
