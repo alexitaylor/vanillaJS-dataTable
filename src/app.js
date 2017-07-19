@@ -150,7 +150,7 @@
   // Get selected number of entries per page
   window.selectEntry = function() {
     var entryValue = document.getElementById('entry').value;
-    document.getElementById('demo').innerHTML = "You selected: " + entryValue;
+    document.getElementById('show-entry').innerHTML = "You selected: " + entryValue;
     options.perPage = parseInt(entryValue);
     dataTable.init('table', options);
     dataTable.getPagination();

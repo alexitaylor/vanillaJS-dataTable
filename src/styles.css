@@ -26,6 +26,20 @@ tr:hover {
     padding: .5%;
 }
 
+.top-block {
+    display: grid;
+    grid-template-columns: 30% 30%;
+    grid-gap: 40%;
+}
+
+#entry-select {
+    padding-top: 5%;
+}
+
+#search {
+    padding-top: 5%;
+}
+
 .pagination-block {
     display: grid;
     grid-template-columns: 30% 40%;
