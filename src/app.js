@@ -29,9 +29,13 @@
       phoneNumber: true,
       position: true,
     },
+    searchedValue: '',
   };
 
   var dummyData = {
+    rows: [],
+  };
+  var searchedData = {
     rows: [],
   };
   //
@@ -87,7 +91,7 @@
      * @returns {Object} 100 Fake values
      */
     createData: function() {
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < 100; i++) {
         dummyData.rows.push({
           name: faker.name.findName(),
           email: faker.internet.email(),
@@ -97,7 +101,6 @@
           number: i,
         });
       }
-
       return dummyData;
     },
     /**
@@ -152,11 +155,16 @@
       });
     },
     // TODO: finish Search
-    searchData: function(inputValue) {
-      dummyData.rows = dummyData.rows.filter(function(item){
-        var name = item.name.toUpperCase();
-        var input = inputValue.toUpperCase();
-        return name.includes(input);
+    searchData: function(inputValue, data) {
+      var input = inputValue.toUpperCase();
+      searchedData.rows = data.filter(function(row){
+        console.log('testing123');
+        for (var key in row) {
+          var item = row[key].toString().toUpperCase();
+          if (item.includes(input)){
+            return true;
+          }
+        }
       });
     }
   };
@@ -165,9 +173,10 @@
   /**
    * A public method
    */
-  var data = util.createData();
+  util.createData();
 
   dataTable.init = function (table, options) {
+    var data = searchedData.rows.length > 0 ? searchedData : dummyData;
     var tableRef = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     // Clear table data before populating, needed when changing # of entries per page
     tableRef.innerHTML = "";
@@ -298,10 +307,11 @@
    * Handle Search
    * */
   window.f = function(e) {
-    console.log(e.target.value);
-    util.searchData(e.target.value);
+    util.searchData(e.target.value, dummyData.rows);
     dataTable.init('data', options);
-  }
+    dataTable.getPagination();
+    options.searchedValue = e.target.value;
+  };
 
   //
   // Public APIs
