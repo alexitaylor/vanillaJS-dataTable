@@ -135,6 +135,22 @@
         });
       }
     },
+    /**
+     * Edit focused Cell and update in-memory data
+     * @private
+     * *@param String className Unique class of cell to edit
+     * @param String editedText Changed text that will update old value
+     */
+    editCell: function(className, editedText) {
+      var index = className.indexOf('@');
+      var uniqueNumber = className.slice(0, index);
+      var key = className.slice(index + 1);
+      dummyData.rows.forEach(function(row){
+        if (row.phoneNumber === uniqueNumber) {
+          row[key] = editedText;
+        }
+      });
+    },
   };
 
 
@@ -159,7 +175,9 @@
         // Add Editable attribute to cells
         newCell.setAttribute('contenteditable', 'true');
         // Add unique class to each cell of each unique row
-        newCell.setAttribute('class', data.rows[i]['phoneNumber']);
+        newCell.setAttribute('class', `${data.rows[i]['phoneNumber']}@${item}`);
+        // Add onblur function to each cell
+        newCell.setAttribute('onblur', 'window.changeCellData(event)');
         // Append a text node to the cell
         var newText  = document.createTextNode(data.rows[i][item]);
         newCell.appendChild(newText);
@@ -261,8 +279,9 @@
     dataTable.init('data', options);
   };
 
-  window.changeCellData = function() {
-    console.log('Something changed');
+  window.changeCellData = function(e) {
+    util.editCell(e.target.className, e.target.innerHTML);
+    dataTable.init('data', options);
   }
 
 
