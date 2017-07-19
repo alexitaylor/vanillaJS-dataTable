@@ -14,10 +14,15 @@
 
   var options = {
     perPage: 10,
+    currentPaginationIndex: 0,
+    perPagination: 10,
   };
 
 
   var myTable = 'something';
   root.myPlugin.init(myTable, options);
-
+  var totalEntries = root.myPlugin.getTotalEntries();
+  document.getElementById('total-entry').innerHTML = totalEntries;
+  document.getElementById('to-entry').innerHTML = '1 - 10';
+  root.myPlugin.getPagination();
 });

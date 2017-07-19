@@ -28,32 +28,32 @@ tr:hover {
 
 .pagination-block {
     display: grid;
-    grid-template-columns: 30% 30%;
-    grid-gap: 40%;
+    grid-template-columns: 30% 40%;
+    grid-gap: 30%;
 }
 
 .pagination-info {
     padding: 5%;
 }
 
-.pagination {
+#pagination {
     padding: 5%;
 }
 
-.pagination a {
+#pagination a {
     color: black;
     float: left;
     padding: 8px 16px;
     text-decoration: none;
 }
 
-.pagination a.active {
+#pagination a.active {
     background-color: #1A8BF0;
     color: white;
     border-radius: 5px;
 }
 
-.pagination a:hover:not(.active) {
+#pagination a:hover:not(.active) {
     background-color: #ddd;
     border-radius: 5px;
 }

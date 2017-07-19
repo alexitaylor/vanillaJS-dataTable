@@ -20,6 +20,12 @@
 
   var options = {
     perPage: 10,
+    currentPaginationIndex: 0,
+    perPagination: 10,
+  };
+
+  var dummyData = {
+    rows: [],
   };
   //
   // Methods
@@ -71,20 +77,17 @@
     /**
      * Creates Fake Data using fakerJS for table
      * @private
-     * @returns {Object} 200 Fake values
+     * @returns {Object} 100 Fake values
      */
     createData: function() {
-      var dummyData = {
-        rows: [],
-      };
-
-      for (var i = 0; i < 200; i++) {
+      for (var i = 0; i < 100; i++) {
         dummyData.rows.push({
           name: faker.name.findName(),
           email: faker.internet.email(),
           compnay: faker.company.companyName(),
           phoneNumber: faker.phone.phoneNumberFormat(),
           position: faker.name.title(),
+          number: i,
         });
       }
 
@@ -96,14 +99,15 @@
   /**
    * A public method
    */
+  var data = util.createData();
+
   dataTable.init = function (table, options) {
     var tableRef = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     // Clear table data before populating, needed when changing # of entries per page
     tableRef.innerHTML = "";
-    // Fake data to insert to table
-    var data = util.createData();
 
-    for (var i = 0; i < options.perPage; i++) {
+    // Fake data to insert to table
+    for (var i = options.currentPaginationIndex; i < options.perPagination; i++) {
       // Insert a row in the table at new row index
       var newRow = tableRef.insertRow(tableRef.rows.length);
       var idx = 0;
@@ -118,14 +122,62 @@
     }
   };
 
+  dataTable.getTotalEntries = function () {
+    return dummyData.rows.length
+  };
+
+  dataTable.getPagination = function () {
+    // render number of pagination based on selection drop down
+    var totalEntries = dataTable.getTotalEntries();
+    var pagination = document.getElementById('pagination');
+    var paginationTemplate = '<a onclick="window.goBack()">&laquo;</a>';
+    var paginationLength = totalEntries / options.perPage;
+
+    pagination.innerHTML = "";
+    for (var i = 1; i <= paginationLength; i++) {
+      paginationTemplate += `<a onclick="window.selectPagination(${i})">${i}</a>`;
+    }
+    paginationTemplate += '<a onclick="window.goForward()">&raquo;</a>';
+    pagination.innerHTML = paginationTemplate
+  };
+
+
+  /**
+  * Event Listeners
+  *
+  * */
   // TODO: Fix the state of this function, not window...
   // Get selected number of entries per page
   window.selectEntry = function() {
     var entryValue = document.getElementById('entry').value;
     document.getElementById('demo').innerHTML = "You selected: " + entryValue;
-    options.perPage = entryValue;
+    options.perPage = parseInt(entryValue);
     dataTable.init('table', options);
-    console.log(options.perPage);
+    dataTable.getPagination();
+    window.selectPagination(1);
+  };
+
+  window.goBack = function() {
+    if (options.index > 1) {
+      window.selectPagination(options.index - 1);
+    }
+  };
+
+  window.selectPagination = function(index) {
+    options.index = index;
+    var totalEntries = dataTable.getTotalEntries();
+    options.currentPaginationIndex = options.perPage * (index - 1);
+    options.perPagination = options.currentPaginationIndex + options.perPage;
+    document.getElementById('to-entry').innerHTML = `${options.currentPaginationIndex} - ${options.perPagination - 1}`;
+    dataTable.init('data', options);
+  };
+
+  window.goForward = function() {
+    var index = options.index || 1;
+    var max = dataTable.getTotalEntries() / options.perPage;
+    if (index < max) {
+      window.selectPagination(index + 1);
+    }
   };
 
   //
