@@ -84,7 +84,7 @@
         dummyData.rows.push({
           name: faker.name.findName(),
           email: faker.internet.email(),
-          compnay: faker.company.companyName(),
+          company: faker.company.companyName(),
           phoneNumber: faker.phone.phoneNumberFormat(),
           position: faker.name.title(),
           number: i,
@@ -93,6 +93,20 @@
 
       return dummyData;
     },
+    filterData: function(entry) {
+      dummyData.rows.sort(function(a, b){
+        var nameA = a[entry].toUpperCase(); // ignore upper and lowercase
+        var nameB = b[entry].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
+      });
+    }
   };
 
 
@@ -179,6 +193,47 @@
       window.selectPagination(index + 1);
     }
   };
+
+  /**
+   * Filter functions
+   *
+   * */
+
+  window.filterName = function() {
+    // do something
+    console.log('Filter Name', dummyData.rows[1]);
+    util.filterData('name');
+    dataTable.init('data', options);
+  };
+
+  window.filterPosition = function() {
+    // do something
+    console.log('Filter Position');
+    util.filterData('position');
+    dataTable.init('data', options);
+  };
+
+  window.filterPhoneNumber = function() {
+    // do something
+    console.log('Filter Phone Number');
+    util.filterData('phoneNumber');
+    dataTable.init('data', options);
+  };
+
+  window.filterEmail = function() {
+    // do something
+    console.log('Filter Email');
+    util.filterData('email');
+    dataTable.init('data', options);
+  };
+
+  window.filterCompany = function() {
+    // do something
+    console.log('Filter Company');
+    util.filterData('company');
+    dataTable.init('data', options);
+  };
+
 
   //
   // Public APIs
