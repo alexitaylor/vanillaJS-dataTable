@@ -158,6 +158,8 @@
         var newCell  = newRow.insertCell(idx);
         // Add Editable attribute to cells
         newCell.setAttribute('contenteditable', 'true');
+        // Add unique class to each cell of each unique row
+        newCell.setAttribute('class', data.rows[i]['phoneNumber']);
         // Append a text node to the cell
         var newText  = document.createTextNode(data.rows[i][item]);
         newCell.appendChild(newText);
