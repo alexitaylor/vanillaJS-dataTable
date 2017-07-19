@@ -87,7 +87,7 @@
      * @returns {Object} 100 Fake values
      */
     createData: function() {
-      for (var i = 0; i < 100; i++) {
+      for (var i = 0; i < 10; i++) {
         dummyData.rows.push({
           name: faker.name.findName(),
           email: faker.internet.email(),
@@ -151,6 +151,14 @@
         }
       });
     },
+    // TODO: finish Search
+    searchData: function(inputValue) {
+      dummyData.rows = dummyData.rows.filter(function(item){
+        var name = item.name.toUpperCase();
+        var input = inputValue.toUpperCase();
+        return name.includes(input);
+      });
+    }
   };
 
 
@@ -278,12 +286,22 @@
     options.flag.company = !options.flag.company;
     dataTable.init('data', options);
   };
-
+  /**
+   * Handle cell change
+   * */
   window.changeCellData = function(e) {
     util.editCell(e.target.className, e.target.innerHTML);
     dataTable.init('data', options);
-  }
+  };
 
+  /**
+   * Handle Search
+   * */
+  window.f = function(e) {
+    console.log(e.target.value);
+    util.searchData(e.target.value);
+    dataTable.init('data', options);
+  }
 
   //
   // Public APIs

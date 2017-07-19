@@ -11,7 +11,7 @@
     <body>
         <div id="app"></div>
 
-        <p contenteditable="true" id="edit" onblur="window.changeCellData()">This is a paragraph. It is editable. Try to change this text. Click outside to unfocus input.</p>
+        <p contenteditable="true">This is a paragraph. It is editable. Hit tab when done editing.</p>
 
         <div class="top-block">
             <div id="entry-select">
@@ -27,7 +27,7 @@
             </div>
 
             <div id="search">
-                Search: <input type="text" name="search">
+                Search: <input type="text" name="search" oninput="window.f(event)">
             </div>
         </div>
 
