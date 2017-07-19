@@ -22,6 +22,13 @@
     perPage: 10,
     currentPaginationIndex: 0,
     perPagination: 10,
+    flag: {
+      name: true,
+      email: true,
+      company: true,
+      phoneNumber: true,
+      position: true,
+    },
   };
 
   var dummyData = {
@@ -93,20 +100,41 @@
 
       return dummyData;
     },
-    filterData: function(entry) {
-      dummyData.rows.sort(function(a, b){
-        var nameA = a[entry].toUpperCase(); // ignore upper and lowercase
-        var nameB = b[entry].toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        // names must be equal
-        return 0;
-      });
-    }
+    /**
+     * Sorts data in table columns
+     * @private
+     * *@param String entry Entry to sort
+     * @param Boolean flag Sort Ascending or Descending order
+     */
+    filterData: function(entry, flag) {
+      if (flag) {
+        dummyData.rows.sort(function(a, b){
+          var nameA = a[entry].toUpperCase(); // ignore upper and lowercase
+          var nameB = b[entry].toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          // names must be equal
+          return 0;
+        });
+      } else {
+        dummyData.rows.sort(function(a, b){
+          var nameA = a[entry].toUpperCase(); // ignore upper and lowercase
+          var nameB = b[entry].toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return 1;
+          }
+          if (nameA > nameB) {
+            return -1;
+          }
+          // names must be equal
+          return 0;
+        });
+      }
+    },
   };
 
 
@@ -196,41 +224,36 @@
 
   /**
    * Filter functions
-   *
+   * Filters: Name, Position, Phone Number, Email and Company
+   * Sorts in Ascending or Descending order
    * */
-
   window.filterName = function() {
-    // do something
-    console.log('Filter Name', dummyData.rows[1]);
-    util.filterData('name');
+    util.filterData('name', options.flag.name);
+    options.flag.name = !options.flag.name;
     dataTable.init('data', options);
   };
 
   window.filterPosition = function() {
-    // do something
-    console.log('Filter Position');
-    util.filterData('position');
+    util.filterData('position', options.flag.position);
+    options.flag.position = !options.flag.position;
     dataTable.init('data', options);
   };
 
   window.filterPhoneNumber = function() {
-    // do something
-    console.log('Filter Phone Number');
-    util.filterData('phoneNumber');
+    util.filterData('phoneNumber', options.flag.phoneNumber);
+    options.flag.phoneNumber = !options.flag.phoneNumber;
     dataTable.init('data', options);
   };
 
   window.filterEmail = function() {
-    // do something
-    console.log('Filter Email');
-    util.filterData('email');
+    util.filterData('email', options.flag.email);
+    options.flag.email = !options.flag.email;
     dataTable.init('data', options);
   };
 
   window.filterCompany = function() {
-    // do something
-    console.log('Filter Company');
-    util.filterData('company');
+    util.filterData('company', options.flag.company);
+    options.flag.company = !options.flag.company;
     dataTable.init('data', options);
   };
 
