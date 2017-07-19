@@ -156,6 +156,8 @@
 
       for (var item in data.rows[i]) {
         var newCell  = newRow.insertCell(idx);
+        // Add Editable attribute to cells
+        newCell.setAttribute('contenteditable', 'true');
         // Append a text node to the cell
         var newText  = document.createTextNode(data.rows[i][item]);
         newCell.appendChild(newText);
@@ -256,6 +258,10 @@
     options.flag.company = !options.flag.company;
     dataTable.init('data', options);
   };
+
+  window.changeCellData = function() {
+    console.log('Something changed');
+  }
 
 
   //

@@ -11,6 +11,8 @@
     <body>
         <div id="app"></div>
 
+        <p contenteditable="true" id="edit" onblur="window.changeCellData()">This is a paragraph. It is editable. Try to change this text.</p>
+
         <div class="top-block">
             <div id="entry-select">
                 <span>Show</span>
@@ -46,7 +48,7 @@
             <div class="pagination-info">
                 <span>Showing </span><span id="to-entry"></span><span> of </span><span id="total-entry"></span>
             </div>
-
+            <!--TODO: Add styling to active page button-->
             <div id="pagination"></div>
         </div>
 
