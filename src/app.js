@@ -135,7 +135,12 @@
         }
       });
     },
-    // TODO: finish Search
+    /**
+     * Search Data Table
+     * @private
+     * *@param String inputValue search query input
+     * @param Object data Table data
+     */
     searchData: function(inputValue, data) {
       var input = inputValue.toUpperCase();
       searchedData.rows = data.filter(function(row){
