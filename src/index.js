@@ -20,7 +20,7 @@
 
 
   var myTable = 'something';
-  root.myPlugin.init(myTable, options);
+  root.myPlugin.init(options);
   var totalEntries = root.myPlugin.getTotalEntries();
   document.getElementById('total-entry').innerHTML = totalEntries;
   document.getElementById('to-entry').innerHTML = '1 - 10';

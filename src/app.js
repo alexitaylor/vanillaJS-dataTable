@@ -14,7 +14,6 @@
   //
   // Variables
   //
-
   var window = root; // Map window to root to avoid confusion
   var dataTable = {}; // Placeholder for public methods
 
@@ -38,9 +37,6 @@
   var searchedData = {
     rows: [],
   };
-  //
-  // Methods
-  //
 
   /**
    * Helpers
@@ -69,23 +65,6 @@
       }
     },
     /**
-     * Merge defaults with user options
-     * @private
-     * @param {Object} defaults Default settings
-     * @param {Object} options User options
-     * @returns {Object} Merged values of defaults and options
-     */
-    extend: function ( defaults, options ) {
-      var extended = {};
-      util.forEach(defaults, function (value, prop) {
-        extended[prop] = defaults[prop];
-      });
-      util.forEach(options, function (value, prop) {
-        extended[prop] = options[prop];
-      });
-      return extended;
-    },
-    /**
      * Creates Fake Data using fakerJS for table
      * @private
      * @returns {Object} 100 Fake values
@@ -110,8 +89,9 @@
      * @param Boolean flag Sort Ascending or Descending order
      */
     filterData: function(entry, flag) {
+      var data = searchedData.rows.length > 0 ? searchedData : dummyData;
       if (flag) {
-        dummyData.rows.sort(function(a, b){
+        data.sort(function(a, b){
           var nameA = a[entry].toUpperCase(); // ignore upper and lowercase
           var nameB = b[entry].toUpperCase(); // ignore upper and lowercase
           if (nameA < nameB) {
@@ -124,7 +104,7 @@
           return 0;
         });
       } else {
-        dummyData.rows.sort(function(a, b){
+        data.sort(function(a, b){
           var nameA = a[entry].toUpperCase(); // ignore upper and lowercase
           var nameB = b[entry].toUpperCase(); // ignore upper and lowercase
           if (nameA < nameB) {
@@ -145,10 +125,11 @@
      * @param String editedText Changed text that will update old value
      */
     editCell: function(className, editedText) {
+      var data = searchedData.rows.length > 0 ? searchedData : dummyData;
       var index = className.indexOf('@');
       var uniqueNumber = className.slice(0, index);
       var key = className.slice(index + 1);
-      dummyData.rows.forEach(function(row){
+      data.forEach(function(row){
         if (row.phoneNumber === uniqueNumber) {
           row[key] = editedText;
         }
@@ -175,7 +156,7 @@
    */
   util.createData();
 
-  dataTable.init = function (table, options) {
+  dataTable.init = function (options) {
     var data = searchedData.rows.length > 0 ? searchedData : dummyData;
     var tableRef = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     // Clear table data before populating, needed when changing # of entries per page
@@ -204,11 +185,13 @@
   };
 
   dataTable.getTotalEntries = function () {
-    return dummyData.rows.length
+    var data = searchedData.rows.length > 0 ? searchedData : dummyData;
+    return data.rows.length
   };
 
-  dataTable.getPagination = function () {
+  dataTable.getPagination = function (index) {
     // render number of pagination based on selection drop down
+    var idx = index || options.index || 1;
     var totalEntries = dataTable.getTotalEntries();
     var pagination = document.getElementById('pagination');
     var paginationTemplate = '<a onclick="window.goBack()">&laquo;</a>';
@@ -216,24 +199,29 @@
 
     pagination.innerHTML = "";
     for (var i = 1; i <= paginationLength; i++) {
-      paginationTemplate += `<a onclick="window.selectPagination(${i})">${i}</a>`;
+      if (i === idx) {
+        paginationTemplate += `<a class="active" onclick="window.selectPagination(${i})">${i}</a>`;
+      } else {
+        paginationTemplate += `<a onclick="window.selectPagination(${i})">${i}</a>`;
+      }
+
     }
     paginationTemplate += '<a onclick="window.goForward()">&raquo;</a>';
-    pagination.innerHTML = paginationTemplate
+    pagination.innerHTML = paginationTemplate;
   };
 
 
   /**
-  * Event Listeners
-  *
-  * */
+   * Event Listeners
+   *
+   * */
   // TODO: Fix the state of this function, not window...
   // Get selected number of entries per page
   window.selectEntry = function() {
     var entryValue = document.getElementById('entry').value;
     document.getElementById('show-entry').innerHTML = "You selected: " + entryValue;
     options.perPage = parseInt(entryValue);
-    dataTable.init('table', options);
+    dataTable.init(options);
     dataTable.getPagination();
     window.selectPagination(1);
   };
@@ -250,7 +238,9 @@
     options.currentPaginationIndex = options.perPage * (index - 1);
     options.perPagination = options.currentPaginationIndex + options.perPage;
     document.getElementById('to-entry').innerHTML = `${options.currentPaginationIndex} - ${options.perPagination - 1}`;
-    dataTable.init('data', options);
+    dataTable.getPagination(options.index);
+    dataTable.init(options);
+    console.log(options.index);
   };
 
   window.goForward = function() {
@@ -269,46 +259,48 @@
   window.filterName = function() {
     util.filterData('name', options.flag.name);
     options.flag.name = !options.flag.name;
-    dataTable.init('data', options);
+    dataTable.init(options);
   };
 
   window.filterPosition = function() {
     util.filterData('position', options.flag.position);
     options.flag.position = !options.flag.position;
-    dataTable.init('data', options);
+    dataTable.init(options);
   };
 
   window.filterPhoneNumber = function() {
     util.filterData('phoneNumber', options.flag.phoneNumber);
     options.flag.phoneNumber = !options.flag.phoneNumber;
-    dataTable.init('data', options);
+    dataTable.init(options);
   };
 
   window.filterEmail = function() {
     util.filterData('email', options.flag.email);
     options.flag.email = !options.flag.email;
-    dataTable.init('data', options);
+    dataTable.init(options);
   };
 
   window.filterCompany = function() {
     util.filterData('company', options.flag.company);
     options.flag.company = !options.flag.company;
-    dataTable.init('data', options);
+    dataTable.init(options);
   };
   /**
    * Handle cell change
    * */
   window.changeCellData = function(e) {
     util.editCell(e.target.className, e.target.innerHTML);
-    dataTable.init('data', options);
+    dataTable.init(options);
   };
 
   /**
    * Handle Search
    * */
   window.f = function(e) {
+    options.currentPaginationIndex = 0;
+    options.perPagination = options.currentPaginationIndex + options.perPage;
     util.searchData(e.target.value, dummyData.rows);
-    dataTable.init('data', options);
+    dataTable.init(options);
     dataTable.getPagination();
     options.searchedValue = e.target.value;
   };
